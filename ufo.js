@@ -15,6 +15,12 @@ export default function Ufo(context, x, y, dx) {
   // Same with these lights
   this.lightSize = 5;
   this.lightScaling = 3;
+
+  // And the legs
+  this.leftLegRot = (30 * Math.PI) / 180;
+  this.rightLegRot = (-30 * Math.PI) / 180;
+  this.leftRotSpeed = (0.1 * Math.PI) / 180;
+  this.rightRotSpeed = (-0.1 * Math.PI) / 180;
 }
 
 Ufo.prototype.drawBody = function () {
@@ -38,7 +44,7 @@ Ufo.prototype.drawLegs = function () {
   // Right leg
   this.c.save();
   this.c.translate(50, 24);
-  this.c.rotate((-30 * Math.PI) / 180);
+  this.c.rotate(this.rightLegRot);
   this.c.fillStyle = this.bodyColor;
   this.c.strokeRect(0, 0, 5, 30);
   this.c.fillRect(0, 0, 5, 30);
@@ -54,7 +60,7 @@ Ufo.prototype.drawLegs = function () {
   this.c.restore();
   this.c.save();
   this.c.translate(-55, 22);
-  this.c.rotate((30 * Math.PI) / 180);
+  this.c.rotate(this.leftLegRot);
   this.c.fillStyle = this.bodyColor;
   this.c.strokeRect(0, 0, 5, 30);
   this.c.fillRect(0, 0, 5, 30);
@@ -137,6 +143,20 @@ Ufo.prototype.update = function () {
   }
 
   this.lightSize += this.lightScaling;
+
+  // Update legs
+  var legLimit = (40 * Math.PI) / 180;
+  var legLimit2 = (20 * Math.PI) / 180;
+
+  if (this.leftLegRot > legLimit || this.leftLegRot < legLimit2) {
+    this.leftRotSpeed = -this.leftRotSpeed;
+  }
+  if (this.rightLegRot < -legLimit || this.rightLegRot > -legLimit2) {
+    this.rightRotSpeed = -this.rightRotSpeed;
+  }
+
+  this.rightLegRot += this.rightRotSpeed;
+  this.leftLegRot += this.leftRotSpeed;
 };
 
 Ufo.prototype.draw = function () {
