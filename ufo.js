@@ -11,6 +11,10 @@ export default function Ufo(context, x, y, dx) {
   this.beamRightX = 300;
   this.beamLeftX_velocity = 1;
   this.beamRightX_velocity = 1;
+
+  // Same with these lights
+  this.lightSize = 5;
+  this.lightScaling = 3;
 }
 
 Ufo.prototype.drawBody = function () {
@@ -70,8 +74,7 @@ Ufo.prototype.drawLights = function () {
   this.c.save();
   this.c.translate(-40, 8);
   this.c.beginPath();
-  this.c.arc(0, 0, 5, 0, 2 * Math.PI);
-  this.c.stroke();
+  this.c.arc(0, 0, this.lightSize, 0, 2 * Math.PI);
   this.c.fillStyle = "#ffd242";
   this.c.fill();
   this.c.restore();
@@ -80,8 +83,7 @@ Ufo.prototype.drawLights = function () {
   this.c.save();
   this.c.translate(0, 8);
   this.c.beginPath();
-  this.c.arc(0, 0, 5, 0, 2 * Math.PI);
-  this.c.stroke();
+  this.c.arc(0, 0, this.lightSize, 0, 2 * Math.PI);
   this.c.fillStyle = "#ffd242";
   this.c.fill();
   this.c.restore();
@@ -90,8 +92,7 @@ Ufo.prototype.drawLights = function () {
   this.c.save();
   this.c.translate(40, 8);
   this.c.beginPath();
-  this.c.arc(0, 0, 5, 0, 2 * Math.PI);
-  this.c.stroke();
+  this.c.arc(0, 0, this.lightSize, 0, 2 * Math.PI);
   this.c.fillStyle = "#ffd242";
   this.c.fill();
   this.c.restore();
@@ -129,6 +130,13 @@ Ufo.prototype.update = function () {
 
   this.beamLeftX += this.beamLeftX_velocity;
   this.beamRightX += this.beamRightX_velocity;
+
+  // Update lights
+  if (this.lightSize < 5 || this.lightSize > 8) {
+    this.lightScaling = -this.lightScaling;
+  }
+
+  this.lightSize += this.lightScaling;
 };
 
 Ufo.prototype.draw = function () {
